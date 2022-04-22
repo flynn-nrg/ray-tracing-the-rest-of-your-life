@@ -28,9 +28,10 @@ func (v *Vec3Impl) SquaredLength() float64 {
 
 // MakeUnitVector transform the vector into its unit representation.
 func (v *Vec3Impl) MakeUnitVector() {
-	v.X = v.X / v.Length()
-	v.Y = v.Y / v.Length()
-	v.Z = v.Z / v.Length()
+	l := v.Length()
+	v.X = v.X / l
+	v.Y = v.Y / l
+	v.Z = v.Z / l
 }
 
 // Add returns the sum of two or more vectors.
