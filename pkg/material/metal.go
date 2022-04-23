@@ -12,6 +12,7 @@ var _ Material = (*Metal)(nil)
 
 // Metal represents metallic materials.
 type Metal struct {
+	nonEmitter
 	albedo *vec3.Vec3Impl
 	fuzz   float64
 }
@@ -31,11 +32,6 @@ func (m *Metal) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, *scat
 	attenuation := m.albedo
 	scatterRecord := scatterrecord.New(specular, true, attenuation, nil)
 	return nil, scatterRecord, true
-}
-
-// Emitted returns black for metallic materials.
-func (m *Metal) Emitted(_ ray.Ray, _ *hitrecord.HitRecord, _ float64, _ float64, _ *vec3.Vec3Impl) *vec3.Vec3Impl {
-	return &vec3.Vec3Impl{}
 }
 
 // ScatteringPDF implements the probability distribution function for metals.

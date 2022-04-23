@@ -14,6 +14,7 @@ var _ Material = (*Dielectric)(nil)
 
 // Dielectric represents a dielectric material.
 type Dielectric struct {
+	nonEmitter
 	refIdx float64
 }
 
@@ -50,7 +51,6 @@ func (d *Dielectric) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, 
 	if refracted, ok = refract(r.Direction(), outwardNormal, niOverNt); ok {
 		reflectProb = schlick(cosine, d.refIdx)
 	} else {
-		scattered = ray.New(hr.P(), reflected, r.Time())
 		reflectProb = 1.0
 	}
 
@@ -61,11 +61,6 @@ func (d *Dielectric) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, 
 	}
 	scatterRecord := scatterrecord.New(scattered, true, attenuation, nil)
 	return scattered, scatterRecord, true
-}
-
-// Emitted returns black for dielectric materials.
-func (d *Dielectric) Emitted(_ ray.Ray, _ *hitrecord.HitRecord, _ float64, _ float64, _ *vec3.Vec3Impl) *vec3.Vec3Impl {
-	return &vec3.Vec3Impl{}
 }
 
 // ScatteringPDF implements the probability distribution function for dieletric materials.

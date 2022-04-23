@@ -17,6 +17,7 @@ var _ Material = (*Lambertian)(nil)
 
 // Lambertian represents a diffuse material.
 type Lambertian struct {
+	nonEmitter
 	albedo texture.Texture
 }
 
@@ -37,11 +38,6 @@ func (l *Lambertian) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, 
 	pdf := pdf.NewCosine(hr.Normal())
 	scatterRecord := scatterrecord.New(nil, false, albedo, pdf)
 	return scattered, scatterRecord, true
-}
-
-// Emitted returns black for Lambertian materials.
-func (l *Lambertian) Emitted(_ ray.Ray, _ *hitrecord.HitRecord, _ float64, _ float64, _ *vec3.Vec3Impl) *vec3.Vec3Impl {
-	return &vec3.Vec3Impl{}
 }
 
 // ScatteringPDF implements the probability distribution function for diffuse materials.
